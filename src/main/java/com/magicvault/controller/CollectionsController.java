@@ -15,30 +15,30 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.magicvault.documents.Decks;
-import com.magicvault.repository.DecksRepository;
+import com.magicvault.documents.Collections;
+import com.magicvault.repository.CollectionsRepository;
 
 @RestController
-@RequestMapping("/decks")
-public class DecksController {
+@RequestMapping("/collections")
+public class CollectionsController {
 	
 	@Autowired
-	private DecksRepository deckRepository;
+	public CollectionsRepository collectionsRepository;
 	
 	@PostMapping
-	public ResponseEntity<?> saveDeck(@RequestBody Decks deck){
+	public ResponseEntity<?> saveCollection(@RequestBody Collections collection){
 		try {
-			Decks decksaved = deckRepository.save(deck);
-			return new ResponseEntity<Decks>(decksaved,HttpStatus.CREATED);
+			Collections collectionsaved = collectionsRepository.save(collection);
+			return new ResponseEntity<Collections>(collectionsaved,HttpStatus.CREATED);
 		} catch (Exception e) {
 			return new ResponseEntity<String>(e.getCause().toString(),HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 	@GetMapping
-	public ResponseEntity<?> findAllDecks(){
+	public ResponseEntity<?> findAllCollections(){
 		try {
-			List<Decks> decks = deckRepository.findAll();
-			return new ResponseEntity<List<Decks>>(decks,HttpStatus.OK);
+			List<Collections> collections = collectionsRepository.findAll();
+			return new ResponseEntity<List<Collections>>(collections,HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<String>(e.getCause().toString(),HttpStatus.INTERNAL_SERVER_ERROR);
 		}
@@ -46,8 +46,8 @@ public class DecksController {
 	@GetMapping(value = "/user/{user}")
 	public ResponseEntity<?> findDecksByUser(@PathVariable("user") String user){
 		try {
-			List<Decks> userdecks = deckRepository.findByUser(user);
-			return new ResponseEntity<List<Decks>>(userdecks,HttpStatus.OK);
+			List<Collections> usercollections = collectionsRepository.findByUser(user);
+			return new ResponseEntity<List<Collections>>(usercollections,HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<String>(e.getCause().toString(),HttpStatus.INTERNAL_SERVER_ERROR);
 		}
@@ -55,14 +55,14 @@ public class DecksController {
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<?> findDeck(@PathVariable("id") Integer id){
 		try {
-			Optional<Decks> _deck = deckRepository.findById(id);
-			if(_deck.isPresent()) 
+			Optional<Collections> _collection = collectionsRepository.findById(id);
+			if(_collection.isPresent()) 
 			{
-				Decks deck = _deck.get();
-				return new ResponseEntity<Decks>(deck,HttpStatus.OK);
+				Collections collection = _collection.get();
+				return new ResponseEntity<Collections>(collection,HttpStatus.OK);
 			} else 
 			{
-				return new ResponseEntity<String>("No existe el Deck",HttpStatus.INTERNAL_SERVER_ERROR);
+				return new ResponseEntity<String>("No existe la Colección",HttpStatus.INTERNAL_SERVER_ERROR);
 			}
 		} catch (Exception e) {
 			return new ResponseEntity<String>(e.getCause().toString(),HttpStatus.INTERNAL_SERVER_ERROR);
@@ -72,24 +72,24 @@ public class DecksController {
 	public ResponseEntity<?> deleteDeck(@PathVariable("id") Integer id)
 	{
 		try {
-			deckRepository.deleteById(id);
-			return new ResponseEntity<String>("Deck Eliminado",HttpStatus.OK);
+			collectionsRepository.deleteById(id);
+			return new ResponseEntity<String>("Colección Eliminada",HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<String>(e.getCause().toString(),HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<?> updateDeck(@PathVariable("id")Integer id, @RequestBody Decks newDeck){
+	public ResponseEntity<?> updateCollection(@PathVariable("id")Integer id, @RequestBody Collections newCollection){
 		try {
-			Optional<Decks> _decks = deckRepository.findById(id);
-			if(_decks.isPresent()) 
+			Optional<Collections> _collection = collectionsRepository.findById(id);
+			if(_collection.isPresent()) 
 			{
-				Decks deck = _decks.get();
-				deck.setUser(newDeck.getUser());
-				deck.setDeckname(newDeck.getDeckname());
-				deck.setDecklist(newDeck.getDecklist());
-				deckRepository.save(deck);
-				return new ResponseEntity<Decks>(deck,HttpStatus.OK);
+				Collections collection = _collection.get();
+				collection.setUser(newCollection.getUser());
+				collection.setCollectionname(newCollection.getCollectionname());
+				collection.setCollectionlist(newCollection.getCollectionlist());
+				collectionsRepository.save(collection);
+				return new ResponseEntity<Collections>(collection,HttpStatus.OK);
 			} else 
 			{
 				return new ResponseEntity<String>("No existe el Deck",HttpStatus.INTERNAL_SERVER_ERROR);
@@ -98,4 +98,5 @@ public class DecksController {
 			return new ResponseEntity<String>(e.getCause().toString(),HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+
 }
