@@ -1,4 +1,4 @@
-package com.magicvault.documentos;
+package com.magicvault.documents;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
