@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.magicvault.documents.Collections;
+import com.magicvault.documents.Decks;
 import com.magicvault.repository.CollectionsRepository;
+import com.magicvault.requests.AddRemoveCardRequest;
 
 @RestController
 @RequestMapping("/collections")
@@ -52,6 +54,42 @@ public class CollectionsController {
 			return new ResponseEntity<String>(e.getCause().toString(),HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+	@PutMapping("/addCard")
+    public ResponseEntity<?> addCardToDeck(@RequestBody AddRemoveCardRequest addCardRequest) {
+        try {
+            Optional<Collections> _collection = collectionsRepository.findByCollectionnameAndUser(addCardRequest.getDeckname(), addCardRequest.getUser());
+            if (_collection.isPresent()) {
+                Collections collection = _collection.get();
+                collection.getCollectionlist().add(addCardRequest.getCardName());
+                collectionsRepository.save(collection);
+                return new ResponseEntity<Collections>(collection, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<String>("No se encontró la colección para el usuario especificado", HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<String>(e.getCause().toString(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+	@DeleteMapping("/removeCard")
+    public ResponseEntity<?> removeCardFromDeck(@RequestBody AddRemoveCardRequest removeCardRequest) {
+        try {
+            Optional<Collections> _collection = collectionsRepository.findByCollectionnameAndUser(removeCardRequest.getDeckname(), removeCardRequest.getUser());
+            if (_collection.isPresent()) {
+                Collections collection = _collection.get();
+                boolean removed = collection.getCollectionlist().remove(removeCardRequest.getCardName());
+                if (removed) {
+                    collectionsRepository.save(collection);
+                    return new ResponseEntity<Collections>(collection, HttpStatus.OK);
+                } else {
+                    return new ResponseEntity<String>("La carta no existe en la colección especificada", HttpStatus.NOT_FOUND);
+                }
+            } else {
+                return new ResponseEntity<String>("No se encontró la colección para el usuario especificado", HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<String>(e.getCause().toString(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<?> findDeck(@PathVariable("id") Integer id){
 		try {
@@ -92,7 +130,7 @@ public class CollectionsController {
 				return new ResponseEntity<Collections>(collection,HttpStatus.OK);
 			} else 
 			{
-				return new ResponseEntity<String>("No existe el Deck",HttpStatus.INTERNAL_SERVER_ERROR);
+				return new ResponseEntity<String>("No existe la Colección",HttpStatus.INTERNAL_SERVER_ERROR);
 			}
 		} catch (Exception e) {
 			return new ResponseEntity<String>(e.getCause().toString(),HttpStatus.INTERNAL_SERVER_ERROR);

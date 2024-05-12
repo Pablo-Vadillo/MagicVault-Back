@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.magicvault.documents.Users;
 import com.magicvault.repository.UsersRepository;
+import com.magicvault.requests.LoginRequest;
 
 @RestController
 @RequestMapping("/users")
@@ -59,6 +60,19 @@ public class UsersController {
 			return new ResponseEntity<String>(e.getCause().toString(),HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+	@PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody LoginRequest user) {
+        try {
+            Users userDB = userRepository.findByUsernameAndPass(user.getUsername(), user.getPassword());
+            if (userDB != null) {
+                return new ResponseEntity<Users>(userDB, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<String>("Credenciales inválidas", HttpStatus.UNAUTHORIZED);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<String>(e.getCause().toString(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<?> deleteUser(@PathVariable("id") Integer id)
 	{
