@@ -18,4 +18,8 @@ public class ScryfallController {
     public Object getRandomCommander() {
         return scryfallService.getRandomCommander();
     }
+    @GetMapping("/all-cards")
+    public Object getAllCards() {
+    	return scryfallService.getAllCards();
+    }
 }
