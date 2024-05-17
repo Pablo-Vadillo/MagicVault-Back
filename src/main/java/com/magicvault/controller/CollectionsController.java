@@ -3,6 +3,7 @@ package com.magicvault.controller;
 import java.util.List;
 import java.util.Optional;
 
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -91,9 +92,10 @@ public class CollectionsController {
         }
     }
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<?> findDeck(@PathVariable("id") Integer id){
+	public ResponseEntity<?> findDeck(@PathVariable("id") String id){
 		try {
-			Optional<Collections> _collection = collectionsRepository.findById(id);
+			ObjectId collectionId = new ObjectId(id);
+			Optional<Collections> _collection = collectionsRepository.findById(collectionId);
 			if(_collection.isPresent()) 
 			{
 				Collections collection = _collection.get();
@@ -107,19 +109,21 @@ public class CollectionsController {
 		}
 	}
 	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<?> deleteDeck(@PathVariable("id") Integer id)
+	public ResponseEntity<?> deleteDeck(@PathVariable("id") String id)
 	{
 		try {
-			collectionsRepository.deleteById(id);
+			ObjectId collectionId = new ObjectId(id);
+			collectionsRepository.deleteById(collectionId);
 			return new ResponseEntity<String>("Colección Eliminada",HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<String>(e.getCause().toString(),HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<?> updateCollection(@PathVariable("id")Integer id, @RequestBody Collections newCollection){
+	public ResponseEntity<?> updateCollection(@PathVariable("id")String id, @RequestBody Collections newCollection){
 		try {
-			Optional<Collections> _collection = collectionsRepository.findById(id);
+			ObjectId collectionId = new ObjectId(id);
+			Optional<Collections> _collection = collectionsRepository.findById(collectionId);
 			if(_collection.isPresent()) 
 			{
 				Collections collection = _collection.get();

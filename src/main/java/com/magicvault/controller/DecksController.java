@@ -3,6 +3,7 @@ package com.magicvault.controller;
 import java.util.List;
 import java.util.Optional;
 
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,12 +38,12 @@ public class DecksController {
 	}
 	@GetMapping
 	public ResponseEntity<?> findAllDecks(){
-		try {
-			List<Decks> decks = deckRepository.findAll();
-			return new ResponseEntity<List<Decks>>(decks,HttpStatus.OK);
-		} catch (Exception e) {
-			return new ResponseEntity<String>(e.getCause().toString(),HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+	    try {
+	        List<Decks> decks = deckRepository.findAll();
+	        return new ResponseEntity<List<Decks>>(decks, HttpStatus.OK);
+	    } catch (Exception e) {
+	        return new ResponseEntity<String>("Error al recuperar los mazos: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+	    }
 	}
 	@GetMapping(value = "/user/{user}")
 	public ResponseEntity<?> findDecksByUser(@PathVariable("user") String user){
@@ -50,7 +51,7 @@ public class DecksController {
 			List<Decks> userdecks = deckRepository.findByUser(user);
 			return new ResponseEntity<List<Decks>>(userdecks,HttpStatus.OK);
 		} catch (Exception e) {
-			return new ResponseEntity<String>(e.getCause().toString(),HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<String>(e.toString(),HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 	@PutMapping("/addCard")
@@ -90,9 +91,10 @@ public class DecksController {
         }
     }
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<?> findDeck(@PathVariable("id") Integer id){
+	public ResponseEntity<?> findDeck(@PathVariable("id") String id){
 		try {
-			Optional<Decks> _deck = deckRepository.findById(id);
+			ObjectId deckId = new ObjectId(id);
+			Optional<Decks> _deck = deckRepository.findById(deckId);
 			if(_deck.isPresent()) 
 			{
 				Decks deck = _deck.get();
@@ -106,33 +108,40 @@ public class DecksController {
 		}
 	}
 	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<?> deleteDeck(@PathVariable("id") Integer id)
+	public ResponseEntity<?> deleteDeck(@PathVariable("id") String id)
 	{
 		try {
-			deckRepository.deleteById(id);
+			ObjectId deckId = new ObjectId(id);
+			deckRepository.deleteById(deckId);
 			return new ResponseEntity<String>("Deck Eliminado",HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<String>(e.getCause().toString(),HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<?> updateDeck(@PathVariable("id")Integer id, @RequestBody Decks newDeck){
-		try {
-			Optional<Decks> _decks = deckRepository.findById(id);
-			if(_decks.isPresent()) 
-			{
-				Decks deck = _decks.get();
-				deck.setUser(newDeck.getUser());
-				deck.setDeckname(newDeck.getDeckname());
-				deck.setDecklist(newDeck.getDecklist());
-				deckRepository.save(deck);
-				return new ResponseEntity<Decks>(deck,HttpStatus.OK);
-			} else 
-			{
-				return new ResponseEntity<String>("No existe el Deck",HttpStatus.INTERNAL_SERVER_ERROR);
-			}
-		} catch (Exception e) {
-			return new ResponseEntity<String>(e.getCause().toString(),HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-	}
+    public ResponseEntity<Decks> updateDeck(@PathVariable("id") String id, @RequestBody Decks newDeck){
+        try {
+            ObjectId deckId = new ObjectId(id);
+            
+            Optional<Decks> _decks = deckRepository.findById(deckId);
+            if(_decks.isPresent()) 
+            {
+                Decks deck = _decks.get();
+                deck.setUser(newDeck.getUser());
+                deck.setDeckname(newDeck.getDeckname());
+                deck.setDecklist(newDeck.getDecklist());
+                deckRepository.save(deck);
+                return new ResponseEntity<Decks>(deck,HttpStatus.OK);
+            } else 
+            {
+                return new ResponseEntity<Decks>(HttpStatus.NOT_FOUND);
+            }
+        } catch (IllegalArgumentException e) {
+
+            return new ResponseEntity<Decks>(HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            return new ResponseEntity<Decks>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }

@@ -1,4 +1,4 @@
-package com.magicvault.beans;
+package com.magicvault.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

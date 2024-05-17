@@ -1,10 +1,15 @@
 package com.magicvault.services;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.magicvault.card.ScryfallCard;
 import com.magicvault.requests.CardListRequests;
+import com.magicvault.requests.CreatureTypesRequest;
+import com.magicvault.requests.SetsDTO;
 
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
@@ -36,6 +41,40 @@ public class ScryfallService {
     		return cards;
         } catch (HttpClientErrorException | HttpServerErrorException ex) {
             System.err.println("Error fetching commander: " + ex.getMessage());
+            return null;
+        }
+    }
+    public List<ScryfallCard> getCardList(List<String> cardlist) {
+    	try {
+            List<ScryfallCard> cards = new ArrayList<>();
+            for (String cardname : cardlist) {
+                String url = SCRYFALL_ENDPOINT + "named?fuzzy=" + cardname;
+                ScryfallCard card = restTemplate.getForObject(url, ScryfallCard.class);
+                if (card != null) {
+                    cards.add(card);
+                }
+            }
+            return cards;
+        } catch (HttpClientErrorException | HttpServerErrorException ex) {
+            System.err.println("Error fetching commander: " + ex.getMessage());
+            return null;
+        }
+    }
+    public CreatureTypesRequest getCreatureTypes() {
+        String url = "https://api.scryfall.com/catalog/creature-types";
+        return restTemplate.getForObject(url, CreatureTypesRequest.class);
+    }
+
+    public SetsDTO getAllSets() {
+        String url = "https://api.scryfall.com/sets";
+        return restTemplate.getForObject(url, SetsDTO.class);
+    }
+    public CardListRequests searchCards(String filter) {
+        try {
+            String url = SCRYFALL_ENDPOINT + "search?q=" + filter;
+            return restTemplate.getForObject(url, CardListRequests.class);
+        } catch (HttpClientErrorException | HttpServerErrorException ex) {
+            System.err.println("Error searching cards: " + ex.getMessage());
             return null;
         }
     }

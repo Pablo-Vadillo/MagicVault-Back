@@ -2,13 +2,14 @@ package com.magicvault.documents;
 
 import java.util.List;
 
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "Collections")
 public class Collections {
 	@Id
-	private int id;
+	private ObjectId id;
 	
 	private String user;
 	
@@ -16,7 +17,7 @@ public class Collections {
 	
 	private List<String> collectionlist;
 
-	public Collections(int id, String user, String collectionname, List<String> collectionlist) {
+	public Collections(ObjectId id, String user, String collectionname, List<String> collectionlist) {
 		super();
 		this.id = id;
 		this.user = user;
@@ -24,11 +25,11 @@ public class Collections {
 		this.collectionlist = collectionlist;
 	}
 
-	public int getId() {
+	public ObjectId getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(ObjectId id) {
 		this.id = id;
 	}
 

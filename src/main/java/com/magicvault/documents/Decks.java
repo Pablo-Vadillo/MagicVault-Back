@@ -2,6 +2,7 @@ package com.magicvault.documents;
 
 import java.util.List;
 
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -9,7 +10,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Decks {
 	
 	@Id
-	private int id;
+	private ObjectId id;
 	
 	private String user;
 	
@@ -17,7 +18,7 @@ public class Decks {
 	
 	private List<String> decklist;
 
-	public Decks(int id, String user, String deckname, List<String> decklist) {
+	public Decks(ObjectId id, String user, String deckname, List<String> decklist) {
 		super();
 		this.id = id;
 		this.user = user;
@@ -25,11 +26,11 @@ public class Decks {
 		this.decklist = decklist;
 	}
 
-	public int getId() {
+	public ObjectId getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(ObjectId id) {
 		this.id = id;
 	}
 

@@ -14,6 +14,7 @@ public class ScryfallCard {
     private String toughness;
     private List<String> colors;
     private List<String> colorIdentity;
+    private Prices prices;
 
     @JsonProperty("name")
     public String getName() {
@@ -50,7 +51,18 @@ public class ScryfallCard {
     public void setImageUris(ImageUris imageUris) {
         this.imageUris = imageUris;
     }
+    public static class ImageUris {
+        private String png;
 
+        @JsonProperty("png")
+        public String getPng() {
+            return png;
+        }
+
+        public void setPng(String png) {
+            this.png = png;
+        }
+    }
     @JsonProperty("mana_cost")
     public String getManaCost() {
         return manaCost;
@@ -95,17 +107,32 @@ public class ScryfallCard {
     public void setColorIdentity(List<String> colorIdentity) {
         this.colorIdentity = colorIdentity;
     }
+    @JsonProperty("prices")
+    public Prices getPrices() {
+    	return prices;
+    }
+    public void setPrices(Prices prices) {
+    	this.prices = prices;
+    }
+    
+    public static class Prices {
+        private String eur;
+        private String eur_foil;
 
-    public static class ImageUris {
-        private String png;
-
-        @JsonProperty("png")
-        public String getPng() {
-            return png;
+        @JsonProperty("eur")
+        public String getEur() {
+            return eur;
         }
 
-        public void setPng(String png) {
-            this.png = png;
+        public void setEur(String eur) {
+            this.eur = eur;
+        }
+        @JsonProperty("eur_foil")
+        public String getEurFoil() {
+        	return eur_foil;
+        }
+        public void setEurFoil(String eur_foil) {
+        	this.eur_foil = eur_foil;
         }
     }
 }
