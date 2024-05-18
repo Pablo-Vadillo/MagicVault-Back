@@ -1,9 +1,10 @@
 package com.magicvault.requests;
 
-public class LoginRequest {
-	public String username;
+public class RegisterRequest {
+    public String username;
+    public String email;
 	public String pass;
-	public LoginRequest(String name, String password) {
+	public RegisterRequest(String name, String password) {
 		super();
 		username = name;
 		pass = password;
@@ -19,5 +20,11 @@ public class LoginRequest {
 	}
 	public void setPassword(String password) {
 		pass = password;
-	}	
+	}
+    public String getEmail() {
+        return email;
+    }
+    public void setEmail(String email) {
+        this.email = email;
+    } 	    
 }

@@ -1,73 +1,61 @@
 package com.magicvault.documents;
 
+import java.util.Collection;
+
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Document(collection = "Users")
-public class Users {
-	
-	@Id
-	private ObjectId id;
-	
-	private String type_rol;
-	
-	private String username;
-	
-	private String pass;
-	
-	private String email;
-	
-	
-	
-	public Users(ObjectId id, String type_rol, String username, String pass, String email) {
-		super();
-		this.id = id;
-		this.type_rol = type_rol;
-		this.username = username;
-		this.pass = pass;
-		this.email = email;
-	}
+public class Users implements UserDetails {
 
-	public ObjectId getId() {
-		return id;
-	}
+    @Id
+    private ObjectId id;
+    private String type_rol;
+    private String username;
+    private String pass;
+    private String email;
 
-	public void setId(ObjectId id) {
-		this.id = id;
-	}
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
+    }
 
-	public String getType_rol() {
-		return type_rol;
-	}
+    @Override
+    public String getPassword() {
+        return pass;
+    }
 
-	public void setType_rol(String type_rol) {
-		this.type_rol = type_rol;
-	}
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
 
-	public String getUsername() {
-		return username;
-	}
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
 
-	public String getPass() {
-		return pass;
-	}
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 
-	public void setPass(String pass) {
-		this.pass = pass;
-	}
 
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-	
-	
 }
