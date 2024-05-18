@@ -1,5 +1,6 @@
 package com.magicvault.documents;
 
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -7,7 +8,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Users {
 	
 	@Id
-	private int id;
+	private ObjectId id;
 	
 	private String type_rol;
 	
@@ -19,7 +20,7 @@ public class Users {
 	
 	
 	
-	public Users(int id, String type_rol, String username, String pass, String email) {
+	public Users(ObjectId id, String type_rol, String username, String pass, String email) {
 		super();
 		this.id = id;
 		this.type_rol = type_rol;
@@ -28,11 +29,11 @@ public class Users {
 		this.email = email;
 	}
 
-	public int getId() {
+	public ObjectId getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(ObjectId id) {
 		this.id = id;
 	}
 

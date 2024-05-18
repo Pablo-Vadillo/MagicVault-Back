@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.magicvault.documents.Collections;
-import com.magicvault.documents.Decks;
 import com.magicvault.repository.CollectionsRepository;
 import com.magicvault.requests.AddRemoveCardRequest;
 
