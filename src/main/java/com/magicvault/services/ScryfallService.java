@@ -72,7 +72,36 @@ public class ScryfallService {
     }
     public CardListRequests searchCards(CardSearchFilter filter) {
         try {
-            String url = SCRYFALL_ENDPOINT + "search?q=" + filter;
+            // Construir la cadena de consulta
+            StringBuilder queryStringBuilder = new StringBuilder();
+    
+            // Agregar los parámetros del filtro a la cadena de consulta
+            if (filter.getColors() != null && !filter.getColors().isEmpty()) {
+                queryStringBuilder.append("c=");
+                queryStringBuilder.append(String.join("", filter.getColors()));
+                queryStringBuilder.append("&");
+            }
+            if (filter.getType() != null) {
+                queryStringBuilder.append("t=");
+                queryStringBuilder.append(filter.getType());
+                queryStringBuilder.append("&");
+            }
+            if (filter.getExpansion() != null) {
+                queryStringBuilder.append("e=");
+                queryStringBuilder.append(filter.getExpansion());
+                queryStringBuilder.append("&");
+            }
+    
+            // Eliminar el último '&' si existe
+            String queryString = queryStringBuilder.toString();
+            if (!queryString.isEmpty() && queryString.endsWith("&")) {
+                queryString = queryString.substring(0, queryString.length() - 1);
+            }
+    
+            // Construir la URL completa
+            String url = SCRYFALL_ENDPOINT + "search?" + queryString;
+    
+            // Realizar la solicitud al endpoint de la API de Scryfall
             return restTemplate.getForObject(url, CardListRequests.class);
         } catch (HttpClientErrorException | HttpServerErrorException ex) {
             System.err.println("Error searching cards: " + ex.getMessage());
