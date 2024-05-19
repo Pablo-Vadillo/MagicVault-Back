@@ -8,6 +8,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.magicvault.card.ScryfallCard;
 import com.magicvault.requests.CardListRequests;
+import com.magicvault.requests.CardSearchFilter;
 import com.magicvault.requests.CreatureTypesRequest;
 import com.magicvault.requests.SetsDTO;
 
@@ -69,7 +70,7 @@ public class ScryfallService {
         String url = "https://api.scryfall.com/sets";
         return restTemplate.getForObject(url, SetsDTO.class);
     }
-    public CardListRequests searchCards(String filter) {
+    public CardListRequests searchCards(CardSearchFilter filter) {
         try {
             String url = SCRYFALL_ENDPOINT + "search?q=" + filter;
             return restTemplate.getForObject(url, CardListRequests.class);

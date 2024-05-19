@@ -16,6 +16,7 @@ import com.magicvault.documents.Decks;
 import com.magicvault.repository.CollectionsRepository;
 import com.magicvault.repository.DecksRepository;
 import com.magicvault.requests.CardListRequests;
+import com.magicvault.requests.CardSearchFilter;
 import com.magicvault.requests.CreatureTypesRequest;
 import com.magicvault.requests.SetsDTO;
 import com.magicvault.services.ScryfallService;
@@ -72,8 +73,7 @@ public class ScryfallController {
         return scryfallService.getAllSets();
     }
     @PostMapping("/search-cards")
-    public CardListRequests searchCards(@RequestBody String filter) {
-    	System.out.println(filter);
-        return scryfallService.searchCards(filter);
-    }
+	public CardListRequests searchCards(@RequestBody CardSearchFilter filter) {
+    	return scryfallService.searchCards(filter);
+	}
 }
