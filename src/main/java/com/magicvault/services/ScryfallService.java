@@ -72,24 +72,29 @@ public class ScryfallService {
     }
     public CardListRequests searchCards(CardSearchFilter filter) {
         try {
-            // Construir la cadena de consulta
             StringBuilder queryStringBuilder = new StringBuilder();
     
             // Agregar los parámetros del filtro a la cadena de consulta
             if (filter.getColors() != null && !filter.getColors().isEmpty()) {
                 queryStringBuilder.append("c=");
                 queryStringBuilder.append(String.join("", filter.getColors()));
-                queryStringBuilder.append("&");
+                queryStringBuilder.append("+");
             }
             if (filter.getType() != null) {
                 queryStringBuilder.append("t=");
                 queryStringBuilder.append(filter.getType());
-                queryStringBuilder.append("&");
+                queryStringBuilder.append("+");
             }
             if (filter.getExpansion() != null) {
                 queryStringBuilder.append("e=");
                 queryStringBuilder.append(filter.getExpansion());
-                queryStringBuilder.append("&");
+                queryStringBuilder.append("+");
+            }
+
+            if (filter.getName() != null) {
+                queryStringBuilder.append("name=");
+                queryStringBuilder.append(filter.getName());
+                queryStringBuilder.append("+");
             }
     
             // Eliminar el último '&' si existe
@@ -99,7 +104,8 @@ public class ScryfallService {
             }
     
             // Construir la URL completa
-            String url = SCRYFALL_ENDPOINT + "search?" + queryString;
+            String url = SCRYFALL_ENDPOINT + "search?q=" + queryString;
+            System.out.println("Url : " +  url);
     
             // Realizar la solicitud al endpoint de la API de Scryfall
             return restTemplate.getForObject(url, CardListRequests.class);

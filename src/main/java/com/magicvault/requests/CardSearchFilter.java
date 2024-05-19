@@ -6,6 +6,8 @@ public class CardSearchFilter {
     private List<String> colors;
     private String type;
     private String expansion;
+    private String name;
+
     public List<String> getColors() {
         return colors;
     }
@@ -24,6 +26,15 @@ public class CardSearchFilter {
     public void setExpansion(String expansion) {
         this.expansion = expansion;
     }
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    
+    
 
     
 }
