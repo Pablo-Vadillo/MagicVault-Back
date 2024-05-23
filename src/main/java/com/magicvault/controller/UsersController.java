@@ -19,71 +19,97 @@ import org.springframework.web.bind.annotation.RestController;
 import com.magicvault.documents.Users;
 import com.magicvault.repository.UsersRepository;
 
+// Controller class definition
 @RestController
-@RequestMapping("/users")
-@CrossOrigin(origins = "*",allowedHeaders="*")
+@RequestMapping("/users") // Base path for all endpoints in this controller
+@CrossOrigin(origins = "*", allowedHeaders = "*") // Allowing requests from any origin with any headers
 public class UsersController {
 	
 	@Autowired
-	private UsersRepository userRepository;
+	private UsersRepository userRepository; // Autowired dependency for accessing User repository
 	
+	// GET endpoint to retrieve all users
 	@GetMapping
 	public ResponseEntity<?> findAllUsers(){
 		try {
+			// Retrieve all users from the repository
 			List<Users> users = userRepository.findAll();
-			return new ResponseEntity<List<Users>>(users,HttpStatus.OK);
+			// Return users with HTTP status OK if successful
+			return new ResponseEntity<List<Users>>(users, HttpStatus.OK);
 		} catch (Exception e) {
-			return new ResponseEntity<String>(e.getCause().toString(),HttpStatus.INTERNAL_SERVER_ERROR);
+			// Handle exceptions and return INTERNAL_SERVER_ERROR if an error occurs
+			return new ResponseEntity<String>(e.getCause().toString(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+	
+	// GET endpoint to find a user by ID
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<?> findUser(@PathVariable("id") String id){
 		try {
+			// Convert the ID string to ObjectId
 			ObjectId userId = new ObjectId(id);
+			// Find the user by ID
 			Optional<Users> _user = userRepository.findById(userId);
 			if(_user.isPresent()) 
 			{
+				// If the user exists, return the user with HTTP status OK
 				Users user = _user.get();
-				return new ResponseEntity<Users>(user,HttpStatus.OK);
+				return new ResponseEntity<Users>(user, HttpStatus.OK);
 			} else 
 			{
-				return new ResponseEntity<String>("No existe Usuario",HttpStatus.INTERNAL_SERVER_ERROR);
+				// Return INTERNAL_SERVER_ERROR if the user is not found
+				return new ResponseEntity<String>("No existe Usuario", HttpStatus.INTERNAL_SERVER_ERROR);
 			}
 		} catch (Exception e) {
-			return new ResponseEntity<String>(e.getCause().toString(),HttpStatus.INTERNAL_SERVER_ERROR);
+			// Handle exceptions and return INTERNAL_SERVER_ERROR if an error occurs
+			return new ResponseEntity<String>(e.getCause().toString(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+	
+	// DELETE endpoint to delete a user by ID
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<?> deleteUser(@PathVariable("id") String id)
 	{
 		try {
+			// Convert the ID string to ObjectId
 			ObjectId userId = new ObjectId(id);
+			// Delete the user by ID
 			userRepository.deleteById(userId);
-			return new ResponseEntity<String>("Usuario Eliminado",HttpStatus.OK);
+			// Return success message with HTTP status OK
+			return new ResponseEntity<String>("Usuario Eliminado", HttpStatus.OK);
 		} catch (Exception e) {
-			return new ResponseEntity<String>(e.getCause().toString(),HttpStatus.INTERNAL_SERVER_ERROR);
+			// Handle exceptions and return INTERNAL_SERVER_ERROR if an error occurs
+			return new ResponseEntity<String>(e.getCause().toString(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+	
+	// PUT endpoint to update a user by ID
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<?> updateUser(@PathVariable("id")String id, @RequestBody Users newUser){
+	public ResponseEntity<?> updateUser(@PathVariable("id") String id, @RequestBody Users newUser){
 		try {
+			// Convert the ID string to ObjectId
 			ObjectId userId = new ObjectId(id);
+			// Find the user by ID
 			Optional<Users> _user = userRepository.findById(userId);
 			if(_user.isPresent()) 
 			{
+				// If the user exists, update user information and save
 				Users user = _user.get();
 				user.setUsername(newUser.getUsername());
 				user.setType_rol(newUser.getType_rol());
 				user.setPass(newUser.getPass());
 				user.setEmail(newUser.getEmail());
 				userRepository.save(user);
-				return new ResponseEntity<Users>(user,HttpStatus.OK);
+				// Return the updated user with HTTP status OK
+				return new ResponseEntity<Users>(user, HttpStatus.OK);
 			} else 
 			{
-				return new ResponseEntity<String>("No existe Usuario",HttpStatus.INTERNAL_SERVER_ERROR);
+				// Return INTERNAL_SERVER_ERROR if the user is not found
+				return new ResponseEntity<String>("No existe Usuario", HttpStatus.INTERNAL_SERVER_ERROR);
 			}
 		} catch (Exception e) {
-			return new ResponseEntity<String>(e.getCause().toString(),HttpStatus.INTERNAL_SERVER_ERROR);
+			// Handle exceptions and return INTERNAL_SERVER_ERROR if an error occurs
+			return new ResponseEntity<String>(e.getCause().toString(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 }

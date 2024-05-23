@@ -2,16 +2,17 @@ package com.magicvault.requests;
 
 import com.magicvault.card.ScryfallCard;
 
+// Class representing a request containing a list of Scryfall cards
 public class CardListRequests {
-	private ScryfallCard[] data;
+    private ScryfallCard[] data; // Array of Scryfall cards
 
-	public ScryfallCard[] getData() {
-		return data;
-	}
+    // Getter method for retrieving the array of Scryfall cards
+    public ScryfallCard[] getData() {
+        return data;
+    }
 
-	public void setData(ScryfallCard[] data) {
-		this.data = data;
-	}
-	
-	
+    // Setter method for setting the array of Scryfall cards
+    public void setData(ScryfallCard[] data) {
+        this.data = data;
+    }
 }

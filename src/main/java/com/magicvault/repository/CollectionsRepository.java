@@ -8,7 +8,12 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 import com.magicvault.documents.Collections;
 
-public interface CollectionsRepository extends MongoRepository<Collections,ObjectId> {
-	List<Collections> findByUser(String user);
-	Optional<Collections> findByCollectionnameAndUser(String collectionname,String user);
+// Spring Data MongoDB repository interface
+public interface CollectionsRepository extends MongoRepository<Collections, ObjectId> {
+    
+    // Method to find collections by user
+    List<Collections> findByUser(String user);
+    
+    // Method to find a collection by name and user
+    Optional<Collections> findByCollectionnameAndUser(String collectionname, String user);
 }

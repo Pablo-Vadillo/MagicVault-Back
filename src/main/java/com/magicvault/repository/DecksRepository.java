@@ -8,7 +8,12 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 import com.magicvault.documents.Decks;
 
-public interface DecksRepository extends MongoRepository<Decks,ObjectId> {
-	List<Decks> findByUser(String user);
-	Optional<Decks> findByDecknameAndUser(String deckname,String user);
+// Spring Data MongoDB repository interface
+public interface DecksRepository extends MongoRepository<Decks, ObjectId> {
+    
+    // Method to find decks by user
+    List<Decks> findByUser(String user);
+    
+    // Method to find a deck by name and user
+    Optional<Decks> findByDecknameAndUser(String deckname, String user);
 }

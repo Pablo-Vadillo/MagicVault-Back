@@ -6,83 +6,80 @@ import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+// Annotation to indicate that this class represents a MongoDB document and specifies the collection name
 @Document(collection = "Decks")
 public class Decks {
-	
-	@Id
-	private ObjectId id;
-	
-	private String user;
-	
-	private String deckname;
-	
-	private List<String> decklist;
+    // Annotation to mark the field as the primary key
+    @Id
+    private ObjectId id; // Unique identifier for the deck
 
-	private String commander;
+    private String user; // User who owns the deck
 
-	private String color;
+    private String deckname; // Name of the deck
 
-	public Decks(ObjectId id, String user, String deckname, List<String> decklist,String commander,String color) {
-		super();
-		this.id = id;
-		this.user = user;
-		this.deckname = deckname;
-		this.decklist = decklist;
-		this.commander = commander;
-		this.color = color;
-	}
+    private List<String> decklist; // List of cards in the deck
 
-	public ObjectId getId() {
-		return id;
-	}
+    private String commander; // Commander associated with the deck
 
-	public void setId(ObjectId id) {
-		this.id = id;
-	}
+    private String color; // Color associated with the deck
 
-	public String getUser() {
-		return user;
-	}
+    // Constructor to initialize all fields
+    public Decks(ObjectId id, String user, String deckname, List<String> decklist, String commander, String color) {
+        super();
+        this.id = id;
+        this.user = user;
+        this.deckname = deckname;
+        this.decklist = decklist;
+        this.commander = commander;
+        this.color = color;
+    }
 
-	public void setUser(String user) {
-		this.user = user;
-	}
+    // Getter and setter methods for all fields
+    public ObjectId getId() {
+        return id;
+    }
 
-	public String getDeckname() {
-		return deckname;
-	}
+    public void setId(ObjectId id) {
+        this.id = id;
+    }
 
-	public void setDeckname(String deckname) {
-		this.deckname = deckname;
-	}
+    public String getUser() {
+        return user;
+    }
 
-	public List<String> getDecklist() {
-		return decklist;
-	}
+    public void setUser(String user) {
+        this.user = user;
+    }
 
-	public void setDecklist(List<String> decklist) {
-		this.decklist = decklist;
-	}
+    public String getDeckname() {
+        return deckname;
+    }
 
-	public String getCommander() {
-		return commander;
-	}
+    public void setDeckname(String deckname) {
+        this.deckname = deckname;
+    }
 
-	public void setCommander(String commander) {
-		this.commander = commander;
-	}
+    public List<String> getDecklist() {
+        return decklist;
+    }
 
-	public String getColor() {
-		return color;
-	}
+    public void setDecklist(List<String> decklist) {
+        this.decklist = decklist;
+    }
 
-	public void setColor(String color) {
-		this.color = color;
-	}
+    public String getCommander() {
+        return commander;
+    }
 
-	public void setColorIdentity(List<String> colorIdentity) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'setColorIdentity'");
-	}
-	
+    public void setCommander(String commander) {
+        this.commander = commander;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
 }
