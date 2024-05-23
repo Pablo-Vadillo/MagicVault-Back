@@ -31,11 +31,27 @@ public class ScryfallService {
         try {
             return restTemplate.getForObject(SCRYFALL_ENDPOINT.concat("random?q=type:legendary+type:creature"), ScryfallCard.class);
         } catch (HttpClientErrorException | HttpServerErrorException ex) {
-            // Log the error and handle it accordingly
             System.err.println("Error fetching commander: " + ex.getMessage());
             return null;
         }
     }
+
+    public ScryfallCard getCommanderByName(String name) {
+        try {
+            String query = String.format("q=name:\"%s\" type:legendary type:creature", name);
+            CardListRequests response = restTemplate.getForObject(SCRYFALL_ENDPOINT.concat("search?" + query), CardListRequests.class);
+            if (response != null && response.getData() != null && response.getData().length > 0) {
+                return response.getData()[0];
+            }
+            return null;
+        } catch (HttpClientErrorException | HttpServerErrorException ex) {
+            System.err.println("Error fetching commander by name: " + ex.getMessage());
+            return null;
+        }
+    }
+
+
+
     public ScryfallCard[] getAllCards() {
     	try {
     		CardListRequests response = restTemplate.getForObject(SCRYFALL_ENDPOINT.concat("search?q=o:a+or+o:e+or+o:i+or+o:o+or+o:u"), CardListRequests.class);
@@ -115,4 +131,5 @@ public class ScryfallService {
             return null;
         }
     }
+
 }

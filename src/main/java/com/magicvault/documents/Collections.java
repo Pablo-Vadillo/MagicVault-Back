@@ -17,12 +17,15 @@ public class Collections {
 	
 	private List<String> collectionlist;
 
-	public Collections(ObjectId id, String user, String collectionname, List<String> collectionlist) {
+	private String color;
+
+	public Collections(ObjectId id, String user, String collectionname, List<String> collectionlist,String color) {
 		super();
 		this.id = id;
 		this.user = user;
 		this.collectionname = collectionname;
 		this.collectionlist = collectionlist;
+		this.color = color;
 	}
 
 	public ObjectId getId() {
@@ -56,7 +59,13 @@ public class Collections {
 	public void setCollectionlist(List<String> collectionlist) {
 		this.collectionlist = collectionlist;
 	}
-	
-	
+
+	public String getColor() {
+		return color;
+	}
+
+	public void setColor(String color) {
+		this.color = color;
+	}
 
 }

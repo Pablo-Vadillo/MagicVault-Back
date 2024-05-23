@@ -18,12 +18,18 @@ public class Decks {
 	
 	private List<String> decklist;
 
-	public Decks(ObjectId id, String user, String deckname, List<String> decklist) {
+	private String commander;
+
+	private String color;
+
+	public Decks(ObjectId id, String user, String deckname, List<String> decklist,String commander,String color) {
 		super();
 		this.id = id;
 		this.user = user;
 		this.deckname = deckname;
 		this.decklist = decklist;
+		this.commander = commander;
+		this.color = color;
 	}
 
 	public ObjectId getId() {
@@ -56,6 +62,27 @@ public class Decks {
 
 	public void setDecklist(List<String> decklist) {
 		this.decklist = decklist;
+	}
+
+	public String getCommander() {
+		return commander;
+	}
+
+	public void setCommander(String commander) {
+		this.commander = commander;
+	}
+
+	public String getColor() {
+		return color;
+	}
+
+	public void setColor(String color) {
+		this.color = color;
+	}
+
+	public void setColorIdentity(List<String> colorIdentity) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'setColorIdentity'");
 	}
 	
 }
